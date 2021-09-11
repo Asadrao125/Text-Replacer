@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/HP/AndroidStudioProjects/TextReplacer/app/src/main/res/drawable/border.xml" value="0.2203125" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/TextReplacer/app/src/main/res/drawable/border2.xml" value="0.2203125" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/TextReplacer/app/src/main/res/layout/activity_clone_text.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/TextReplacer/app/src/main/res/layout/activity_count_text.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/TextReplacer/app/src/main/res/layout/activity_home.xml" value="0.18" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/TextReplacer/app/src/main/res/layout/activity_main.xml" value="0.175" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/TextReplacer/app/src/main/res/layout/activity_mark_text.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/TextReplacer/app/src/main/res/layout/activity_replace_text.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/TextReplacer/app/src/main/res/layout/activity_reverse_text.xml" value="0.20416666666666666" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

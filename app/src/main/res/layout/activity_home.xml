@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="20dp"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".activities.HomeActivity">
+
+    <Button
+        android:id="@+id/btnReplaceText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Replace Text" />
+
+    <Button
+        android:id="@+id/btnSearchText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Search Text" />
+
+    <Button
+        android:id="@+id/btnCountText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Count Text" />
+
+    <Button
+        android:id="@+id/btnCloneText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Clone Text" />
+
+    <Button
+        android:id="@+id/btnReverseText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Reverse Text" />
+
+    <Button
+        android:id="@+id/btnMarkText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Mark Text" />
+
+</LinearLayout>
