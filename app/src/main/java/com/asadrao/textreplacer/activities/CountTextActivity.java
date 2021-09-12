@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,11 +47,6 @@ public class CountTextActivity extends AppCompatActivity {
                         tvTotalWords.setText("Total Words: " + words.length);
                     }
 
-                    /* String words[] = input.trim().split(" ");
-                        if (words.length > 0) {
-                            tvTotalWords.setText("Total Words: " + words.length);
-                        } */
-
                     if (checkBox.isChecked()) {
                         tvTotalLetters.setText("Total Letters: " + temp.length());
                     } else {
@@ -58,6 +54,7 @@ public class CountTextActivity extends AppCompatActivity {
                         int res = input.length() - spaces;
                         tvTotalLetters.setText("Total Letters: " + res);
                     }
+
                 } else {
                     Toast.makeText(CountTextActivity.this, "Please enter input", Toast.LENGTH_SHORT).show();
                 }
