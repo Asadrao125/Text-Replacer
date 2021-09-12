@@ -3,9 +3,11 @@ package com.asadrao.textreplacer.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -32,6 +34,7 @@ public class ReverseTextActivity extends AppCompatActivity {
         btnReverseText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                hideKeyboard(ReverseTextActivity.this);
                 String input = edtInput.getText().toString().trim();
                 if (!input.isEmpty()) {
                     StringBuffer buffer = new StringBuffer(input);
@@ -41,6 +44,15 @@ public class ReverseTextActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View view = activity.getCurrentFocus();
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     @Override

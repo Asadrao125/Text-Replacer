@@ -3,6 +3,7 @@ package com.asadrao.textreplacer.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
@@ -11,6 +12,7 @@ import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -38,6 +40,7 @@ public class MarkTextActivity extends AppCompatActivity {
         btnMarkText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                hideKeyboard(MarkTextActivity.this);
                 String input = edtInput.getText().toString();
                 String num = edtTotalWord.getText().toString().trim();
                 if (!input.isEmpty() && !num.isEmpty()) {
@@ -56,6 +59,15 @@ public class MarkTextActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View view = activity.getCurrentFocus();
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     @Override
