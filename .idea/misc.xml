@@ -7,6 +7,7 @@
         <entry key="..\:/Users/HP/AndroidStudioProjects/TextReplacer/app/src/main/res/drawable/border2.xml" value="0.2203125" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/TextReplacer/app/src/main/res/drawable/home_curve_white.xml" value="0.2169230769230769" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/TextReplacer/app/src/main/res/drawable/orange_border.xml" value="0.2169230769230769" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/TextReplacer/app/src/main/res/drawable/ripple_effect.xml" value="0.2169230769230769" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/TextReplacer/app/src/main/res/drawable/selector.xml" value="0.2169230769230769" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/TextReplacer/app/src/main/res/drawable/white_border.xml" value="0.2169230769230769" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/TextReplacer/app/src/main/res/layout/activity_clone_text.xml" value="0.20416666666666666" />
@@ -16,7 +17,7 @@
         <entry key="..\:/Users/HP/AndroidStudioProjects/TextReplacer/app/src/main/res/layout/activity_mark_text.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/TextReplacer/app/src/main/res/layout/activity_replace_text.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/TextReplacer/app/src/main/res/layout/activity_reverse_text.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/HP/AndroidStudioProjects/TextReplacer/app/src/main/res/layout/activity_search_text.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/TextReplacer/app/src/main/res/layout/activity_search_text.xml" value="0.2" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/TextReplacer/app/src/main/res/layout/dialog_about.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/TextReplacer/app/src/main/res/layout/dialog_more.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/TextReplacer/app/src/main/res/menu/home_menu.xml" value="0.20416666666666666" />

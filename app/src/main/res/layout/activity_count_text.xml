@@ -48,7 +48,7 @@
                         android:layout_height="140dp"
                         android:background="@drawable/border"
                         android:gravity="top"
-                        android:hint="Input"
+                        android:hint="Enter Input"
                         android:imeOptions="actionDone"
                         android:inputType="text"
                         android:minLines="5"
@@ -101,7 +101,9 @@
                             android:layout_height="wrap_content"
                             android:padding="8dp"
                             android:text="Output Section"
-                            android:textColor="@color/white" />
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="18sp" />
 
                     </LinearLayout>
 
