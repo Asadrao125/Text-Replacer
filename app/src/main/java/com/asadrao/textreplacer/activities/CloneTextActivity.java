@@ -15,15 +15,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.asadrao.textreplacer.R;
+import com.asadrao.textreplacer.ads.AdInterface;
+import com.asadrao.textreplacer.ads.AdUtil;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.rewarded.RewardedAd;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class CloneTextActivity extends AppCompatActivity {
+public class CloneTextActivity extends AppCompatActivity implements AdInterface {
+    AdView adView;
     Button btnCloneText;
     TextView tvOutput;
+    AdInterface adInterface;
+    RewardedAd rewardedAd;
     EditText edtInput, edtCloneLimit;
 
     @Override
@@ -37,6 +44,13 @@ public class CloneTextActivity extends AppCompatActivity {
         tvOutput = findViewById(R.id.tvOutput);
         edtInput = findViewById(R.id.edtInput);
         edtCloneLimit = findViewById(R.id.edtCloneLimit);
+        adInterface = CloneTextActivity.this;
+
+        adView = findViewById(R.id.adView);
+        AdUtil adUtil = new AdUtil(this, adInterface);
+        adUtil.loadBannerAd(adView);
+        adUtil.showInterstial();
+        adUtil.showRewardAd();
 
         btnCloneText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +70,6 @@ public class CloneTextActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     @Override
@@ -78,4 +91,12 @@ public class CloneTextActivity extends AppCompatActivity {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
+    @Override
+    public void rewardAdLoaded(String msg) {
+        if (msg.equals("DONE")) {
+
+        } else {
+
+        }
+    }
 }

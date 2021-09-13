@@ -47,8 +47,6 @@
                         android:background="@drawable/border"
                         android:gravity="top"
                         android:hint="Enter Input"
-                        android:imeOptions="actionDone"
-                        android:inputType="text"
                         android:minLines="5"
                         android:padding="5dp" />
 
