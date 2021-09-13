@@ -60,7 +60,7 @@ public class AdUtil {
                 });
     }
 
-    public void showRewardAd() {
+    /*public void showRewardAd() {
         AdRequest adRequest = new AdRequest.Builder().build();
         RewardedAd.load(activity, activity.getString(R.string.reward_ad), adRequest, new RewardedAdLoadCallback() {
             @Override
@@ -74,8 +74,7 @@ public class AdUtil {
                 });
             }
         });
-
-    }
+    }*/
 
     private AdSize getAdSize() {
         Display display = activity.getWindowManager().getDefaultDisplay();
