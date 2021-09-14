@@ -20,7 +20,9 @@ import android.widget.TextView;
 
 import com.asadrao.textreplacer.BuildConfig;
 import com.asadrao.textreplacer.R;
+import com.asadrao.textreplacer.SaveModel;
 import com.asadrao.textreplacer.ads.AdUtil;
+import com.asadrao.textreplacer.utils.Database;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
@@ -28,7 +30,7 @@ import com.google.android.gms.ads.initialization.OnInitializationCompleteListene
 
 public class HomeActivity extends AppCompatActivity {
     TextView tvVersionName;
-    LinearLayout shareLayout, moreLayout;
+    LinearLayout shareLayout, moreLayout, saveDataLayout;
     CardView cvReplace, cvSearch, cvCount, cvClone, cvReverse, cvMark;
 
     @Override
@@ -42,6 +44,9 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        Database database = new Database(this);
+        database.createDatabase();
+
         cvReplace = findViewById(R.id.cvReplace);
         cvSearch = findViewById(R.id.cvSearch);
         cvCount = findViewById(R.id.cvCount);
@@ -51,6 +56,14 @@ public class HomeActivity extends AppCompatActivity {
         shareLayout = findViewById(R.id.shareLayout);
         moreLayout = findViewById(R.id.moreLayout);
         tvVersionName = findViewById(R.id.tvVersionName);
+        saveDataLayout = findViewById(R.id.saveDataLayout);
+
+        saveDataLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), ShowSavedDataActivity.class));
+            }
+        });
 
         tvVersionName.setText("Version Name: " + BuildConfig.VERSION_NAME);
 

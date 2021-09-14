@@ -47,6 +47,26 @@
                         android:textColor="@color/white"
                         android:textSize="18sp" />
 
+                    <LinearLayout
+                        android:id="@+id/saveDataLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/white_border"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/ripple_effect"
+                            android:padding="10dp"
+                            android:text="Saved Data"
+                            android:textColor="@color/white"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+
                 </RelativeLayout>
 
                 <LinearLayout

@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TextReplacer">
         <activity
+            android:name=".activities.ShowSavedDataActivity"
+            android:exported="true" />
+        <activity
             android:name=".activities.MarkTextActivity"
             android:exported="true" />
         <activity
@@ -39,13 +42,11 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-7301652379104128~6817025646" />
-
     </application>
 
 </manifest>

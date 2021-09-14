@@ -15,14 +15,17 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.asadrao.textreplacer.BuildConfig;
 import com.asadrao.textreplacer.R;
+import com.asadrao.textreplacer.SaveModel;
 import com.asadrao.textreplacer.ads.AdInterface;
 import com.asadrao.textreplacer.ads.AdUtil;
 import com.asadrao.textreplacer.ads.RewardAdUtil;
+import com.asadrao.textreplacer.utils.Database;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 
@@ -33,12 +36,12 @@ import java.util.Collections;
 
 public class CloneTextActivity extends AppCompatActivity implements AdInterface {
     AdView adView;
-    Button btnCloneText;
-    TextView tvOutput;
     String result;
+    TextView tvOutput;
+    Button btnCloneText;
     AdInterface adInterface;
     EditText edtInput, edtCloneLimit;
-    Button btnShare, btnCopy, btnSave;
+    LinearLayout shareLayout, copyLayout, saveLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +56,9 @@ public class CloneTextActivity extends AppCompatActivity implements AdInterface 
         edtCloneLimit = findViewById(R.id.edtCloneLimit);
         adInterface = CloneTextActivity.this;
 
-        btnShare = findViewById(R.id.btnShare);
-        btnCopy = findViewById(R.id.btnCopy);
-        btnSave = findViewById(R.id.btnSave);
+        shareLayout = findViewById(R.id.shareLayout);
+        copyLayout = findViewById(R.id.copyLayout);
+        saveLayout = findViewById(R.id.saveLayout);
 
         adView = findViewById(R.id.adView);
         AdUtil adUtil = new AdUtil(this, adInterface);
@@ -83,7 +86,7 @@ public class CloneTextActivity extends AppCompatActivity implements AdInterface 
             }
         });
 
-        btnShare.setOnClickListener(new View.OnClickListener() {
+        shareLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
@@ -95,7 +98,7 @@ public class CloneTextActivity extends AppCompatActivity implements AdInterface 
             }
         });
 
-        btnCopy.setOnClickListener(new View.OnClickListener() {
+        copyLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
@@ -107,7 +110,7 @@ public class CloneTextActivity extends AppCompatActivity implements AdInterface 
             }
         });
 
-        btnSave.setOnClickListener(new View.OnClickListener() {
+        saveLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
@@ -119,6 +122,32 @@ public class CloneTextActivity extends AppCompatActivity implements AdInterface 
             }
         });
 
+    }
+
+    @Override
+    public void rewardAdLoaded(String msg, String buttonClicked) {
+        if (msg.equals("DONE")) {
+            if (buttonClicked.equals("SHARE")) {
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, result);
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
+            } else if (buttonClicked.equals("COPY")) {
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("label", result);
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(CloneTextActivity.this, "Output Copied", Toast.LENGTH_SHORT).show();
+            } else if (buttonClicked.equals("SAVE")) {
+                Database database = new Database(CloneTextActivity.this);
+                long res = database.saveData(new SaveModel(0, result));
+                if (res != -1) {
+                    Toast.makeText(CloneTextActivity.this, "Output Saved", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(CloneTextActivity.this, "Failed To Save Output", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
     }
 
     @Override
@@ -138,25 +167,5 @@ public class CloneTextActivity extends AppCompatActivity implements AdInterface 
             view = new View(activity);
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
-
-    @Override
-    public void rewardAdLoaded(String msg, String buttonClicked) {
-        if (msg.equals("DONE")) {
-            if (buttonClicked.equals("SHARE")) {
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, result);
-                sendIntent.setType("text/plain");
-                startActivity(sendIntent);
-            } else if (buttonClicked.equals("COPY")) {
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("label", result);
-                clipboard.setPrimaryClip(clip);
-                Toast.makeText(CloneTextActivity.this, "Output Copied", Toast.LENGTH_SHORT).show();
-            } else if (buttonClicked.equals("SAVE")) {
-                Toast.makeText(getApplicationContext(), "" + buttonClicked, Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 }
