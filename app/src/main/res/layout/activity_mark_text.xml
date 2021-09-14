@@ -200,7 +200,7 @@
                             android:layout_height="20dp"
                             android:layout_marginRight="10dp"
                             android:src="@drawable/ic_share"
-                            app:tint="@color/black" />
+                            app:tint="@color/orange" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -233,8 +233,8 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_marginRight="10dp"
-                            android:src="@drawable/ic_more"
-                            app:tint="@color/black" />
+                            android:src="@drawable/ic_copy"
+                            app:tint="@color/orange" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -261,7 +261,7 @@
                     android:layout_height="20dp"
                     android:layout_marginRight="10dp"
                     android:src="@drawable/ic_save"
-                    app:tint="@color/black" />
+                    app:tint="@color/orange" />
 
                 <TextView
                     android:layout_width="wrap_content"
