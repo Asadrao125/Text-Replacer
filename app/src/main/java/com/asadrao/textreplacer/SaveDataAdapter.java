@@ -22,10 +22,8 @@ import com.asadrao.textreplacer.utils.Database;
 
 public class SaveDataAdapter extends RecyclerView.Adapter<SaveDataAdapter.MyViewHolder> {
     Context context;
-    SaveModel saveModel;
     ArrayList<SaveModel> saveModelArrayList;
     Database database;
-    int pos;
 
     public SaveDataAdapter(Context context, ArrayList<SaveModel> notificationModelArrayList) {
         this.context = context;
@@ -43,16 +41,14 @@ public class SaveDataAdapter extends RecyclerView.Adapter<SaveDataAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        pos = position;
-        saveModel = saveModelArrayList.get(position);
-        holder.tvOutput.setText(saveModel.output);
+        holder.tvOutput.setText(saveModelArrayList.get(position).output);
         holder.icDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                database.deleteCategory(saveModel.id);
-                saveModelArrayList.remove(pos);
-                notifyItemRemoved(pos);
-                notifyItemRangeChanged(pos, saveModelArrayList.size());
+                database.deleteCategory(saveModelArrayList.get(position).id);
+                saveModelArrayList.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, saveModelArrayList.size());
             }
         });
 
@@ -60,7 +56,7 @@ public class SaveDataAdapter extends RecyclerView.Adapter<SaveDataAdapter.MyView
             @Override
             public void onClick(View view) {
                 ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("label", saveModel.output);
+                ClipData clip = ClipData.newPlainText("label", saveModelArrayList.get(position).output);
                 clipboard.setPrimaryClip(clip);
                 Toast.makeText(context, "Copied", Toast.LENGTH_SHORT).show();
             }
@@ -71,7 +67,7 @@ public class SaveDataAdapter extends RecyclerView.Adapter<SaveDataAdapter.MyView
             public void onClick(View view) {
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, saveModel.output);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, saveModelArrayList.get(position).output);
                 sendIntent.setType("text/plain");
                 context.startActivity(sendIntent);
             }

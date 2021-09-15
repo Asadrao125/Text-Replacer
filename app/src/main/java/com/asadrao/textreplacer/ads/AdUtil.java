@@ -50,7 +50,6 @@ public class AdUtil {
                     public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
                         Log.i("onAdLoaded", "onAdLoaded");
                         interstitialAd.show(activity);
-
                     }
 
                     @Override
@@ -59,22 +58,6 @@ public class AdUtil {
                     }
                 });
     }
-
-    /*public void showRewardAd() {
-        AdRequest adRequest = new AdRequest.Builder().build();
-        RewardedAd.load(activity, activity.getString(R.string.reward_ad), adRequest, new RewardedAdLoadCallback() {
-            @Override
-            public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
-                super.onAdLoaded(rewardedAd);
-                rewardedAd.show(activity, new OnUserEarnedRewardListener() {
-                    @Override
-                    public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
-                        adInterface.rewardAdLoaded("DONE");
-                    }
-                });
-            }
-        });
-    }*/
 
     private AdSize getAdSize() {
         Display display = activity.getWindowManager().getDefaultDisplay();

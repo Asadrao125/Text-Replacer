@@ -12,12 +12,17 @@ import android.widget.Toast;
 import com.asadrao.textreplacer.R;
 import com.asadrao.textreplacer.SaveDataAdapter;
 import com.asadrao.textreplacer.SaveModel;
+import com.asadrao.textreplacer.ads.AdInterface;
+import com.asadrao.textreplacer.ads.AdUtil;
 import com.asadrao.textreplacer.utils.Database;
+import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 
 public class ShowSavedDataActivity extends AppCompatActivity {
+    AdView adView;
     Database database;
+    AdInterface adInterface;
     RecyclerView rvSaveData;
     ArrayList<SaveModel> saveModelArrayList = new ArrayList<>();
 
@@ -30,6 +35,11 @@ public class ShowSavedDataActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         database = new Database(ShowSavedDataActivity.this);
         rvSaveData = findViewById(R.id.rvSaveData);
+
+        adView = findViewById(R.id.adView);
+        AdUtil adUtil = new AdUtil(this, adInterface);
+        adUtil.loadBannerAd(adView);
+
         rvSaveData.setLayoutManager(new LinearLayoutManager(this));
         rvSaveData.setHasFixedSize(true);
         if (database.getAllSavedData() != null) {

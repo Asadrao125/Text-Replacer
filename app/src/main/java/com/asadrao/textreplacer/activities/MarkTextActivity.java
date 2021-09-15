@@ -26,15 +26,21 @@ import android.widget.Toast;
 import com.asadrao.textreplacer.R;
 import com.asadrao.textreplacer.SaveModel;
 import com.asadrao.textreplacer.ads.AdInterface;
+import com.asadrao.textreplacer.ads.AdUtil;
 import com.asadrao.textreplacer.ads.RewardAdUtil;
 import com.asadrao.textreplacer.utils.Database;
+import com.asadrao.textreplacer.utils.GlobalFunction;
+import com.google.android.gms.ads.AdView;
 
 public class MarkTextActivity extends AppCompatActivity implements AdInterface {
     TextView tvOutput;
     String result;
+    AdView adView;
     Button btnMarkText;
     AdInterface adInterface;
+    LinearLayout outputLayout;
     EditText edtInput, edtTotalWord;
+    GlobalFunction globalFunction;
     LinearLayout shareLayout, copyLayout, saveLayout;
 
     @Override
@@ -52,6 +58,12 @@ public class MarkTextActivity extends AppCompatActivity implements AdInterface {
         copyLayout = findViewById(R.id.copyLayout);
         saveLayout = findViewById(R.id.saveLayout);
         adInterface = MarkTextActivity.this;
+        outputLayout = findViewById(R.id.outputLayout);
+        globalFunction = new GlobalFunction(this);
+
+        adView = findViewById(R.id.adView);
+        AdUtil adUtil = new AdUtil(this, adInterface);
+        adUtil.loadBannerAd(adView);
 
         btnMarkText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,18 +72,22 @@ public class MarkTextActivity extends AppCompatActivity implements AdInterface {
                 String input = edtInput.getText().toString();
                 String num = edtTotalWord.getText().toString().trim();
                 if (!input.isEmpty() && !num.isEmpty()) {
+                    outputLayout.setVisibility(View.VISIBLE);
                     int totalWord = Integer.parseInt(num);
                     if (totalWord <= input.length()) {
+                        outputLayout.setVisibility(View.VISIBLE);
                         String val = input.substring(0, totalWord);
                         String newS = input.replace(val, "");
                         String next = "<font color='#EE0000'>" + val + "</font>";
                         tvOutput.setText(Html.fromHtml(next + newS));
                         result = String.valueOf(Html.fromHtml(next + newS));
                     } else {
+                        outputLayout.setVisibility(View.GONE);
                         Toast.makeText(MarkTextActivity.this, "Please donot enter limit " +
                                 "greater than input length", Toast.LENGTH_SHORT).show();
                     }
                 } else {
+                    outputLayout.setVisibility(View.GONE);
                     Toast.makeText(MarkTextActivity.this, "Please enter input", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -81,6 +97,7 @@ public class MarkTextActivity extends AppCompatActivity implements AdInterface {
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
+                    handleButton(false);
                     RewardAdUtil rewardAdUtil = new RewardAdUtil(MarkTextActivity.this, adInterface, "SHARE");
                     rewardAdUtil.showRewardAd();
                 } else {
@@ -93,6 +110,7 @@ public class MarkTextActivity extends AppCompatActivity implements AdInterface {
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
+                    handleButton(false);
                     RewardAdUtil rewardAdUtil = new RewardAdUtil(MarkTextActivity.this, adInterface, "COPY");
                     rewardAdUtil.showRewardAd();
                 } else {
@@ -105,6 +123,7 @@ public class MarkTextActivity extends AppCompatActivity implements AdInterface {
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
+                    handleButton(false);
                     RewardAdUtil rewardAdUtil = new RewardAdUtil(MarkTextActivity.this, adInterface, "SAVE");
                     rewardAdUtil.showRewardAd();
                 } else {
@@ -115,29 +134,25 @@ public class MarkTextActivity extends AppCompatActivity implements AdInterface {
 
     }
 
+    public void handleButton(boolean enableButton) {
+        shareLayout.setEnabled(enableButton);
+        copyLayout.setEnabled(enableButton);
+        saveLayout.setEnabled(enableButton);
+    }
+
     @Override
     public void rewardAdLoaded(String msg, String buttonClicked) {
-        if (msg.equals("DONE")) {
+        if (msg.equals("ENABLE_Button")) {
+            handleButton(true);
+        } else {
             if (buttonClicked.equals("SHARE")) {
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, result);
-                sendIntent.setType("text/plain");
-                startActivity(sendIntent);
+                globalFunction.shareMsg(result);
             } else if (buttonClicked.equals("COPY")) {
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("label", result);
-                clipboard.setPrimaryClip(clip);
-                Toast.makeText(MarkTextActivity.this, "Output Copied", Toast.LENGTH_SHORT).show();
+                globalFunction.copyOutput(result);
             } else if (buttonClicked.equals("SAVE")) {
-                Database database = new Database(MarkTextActivity.this);
-                long res = database.saveData(new SaveModel(0, result));
-                if (res != -1) {
-                    Toast.makeText(MarkTextActivity.this, "Output Saved", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(MarkTextActivity.this, "Failed To Save Output", Toast.LENGTH_SHORT).show();
-                }
+                globalFunction.saveOutput(result);
             }
+            handleButton(true);
         }
     }
 

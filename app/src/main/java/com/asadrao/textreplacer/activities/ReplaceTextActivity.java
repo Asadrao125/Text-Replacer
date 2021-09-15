@@ -22,17 +22,23 @@ import android.widget.Toast;
 import com.asadrao.textreplacer.R;
 import com.asadrao.textreplacer.SaveModel;
 import com.asadrao.textreplacer.ads.AdInterface;
+import com.asadrao.textreplacer.ads.AdUtil;
 import com.asadrao.textreplacer.ads.RewardAdUtil;
 import com.asadrao.textreplacer.utils.Database;
+import com.asadrao.textreplacer.utils.GlobalFunction;
+import com.google.android.gms.ads.AdView;
 
 public class ReplaceTextActivity extends AppCompatActivity implements AdInterface {
     EditText edtInput, edtFindText, edtReplaceWith;
     Button btnReplaceText;
+    AdView adView;
+    GlobalFunction globalFunction;
     TextView tvOutput, tvInputWord, tvOutputWord, tvInputLetter, tvOutputLetter;
     CheckBox cbLowercase, cbCountWord, cbCountLetter, cbReverseText;
     LinearLayout shareLayout, copyLayout, saveLayout;
     String result;
     AdInterface adInterface;
+    LinearLayout outputLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,54 +65,23 @@ public class ReplaceTextActivity extends AppCompatActivity implements AdInterfac
         shareLayout = findViewById(R.id.shareLayout);
         copyLayout = findViewById(R.id.copyLayout);
         saveLayout = findViewById(R.id.saveLayout);
+        outputLayout = findViewById(R.id.outputLayout);
+        globalFunction = new GlobalFunction(this);
+
+        adView = findViewById(R.id.adView);
+        AdUtil adUtil = new AdUtil(this, adInterface);
+        adUtil.loadBannerAd(adView);
 
         btnReplaceText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 hideKeyboard(ReplaceTextActivity.this);
-                String input = edtInput.getText().toString().trim();
-                String temp = input;
-                if (cbLowercase.isChecked()) {
-                    tvOutput.setText("Output: " + input.toLowerCase());
-                    result = input.toLowerCase();
-                }
-
-                if (cbReverseText.isChecked()) {
-                    StringBuffer buffer = new StringBuffer(input);
-                    tvOutput.setText("Output: " + buffer.reverse());
-                    result = "" + buffer.reverse();
-                }
-
-                if (cbCountWord.isChecked()) {
-                    input = input.replaceAll("\\s{2,}", " ").trim();
-                    String words[] = input.trim().split(" ");
-                    if (words.length > 0) {
-                        tvOutputWord.setText("Output Words: " + words.length);
-                        String wordsNew[] = input.trim().split(" ");
-                        tvInputWord.setText("Input Words: " + wordsNew.length);
-                    }
-                }
-
-                if (cbCountLetter.isChecked()) {
-                    int spaces = input == null ? 0 : input.replaceAll("[^ ]", "").length();
-                    int res = input.length() - spaces;
-                    tvOutputLetter.setText("Output Letters: " + input.trim().length());
-                    tvInputLetter.setText("Input Letters: " + res);
-                }
-
-                if (!edtFindText.getText().toString().trim().isEmpty() && edtReplaceWith.getText().toString().isEmpty()) {
-                    input = input.replace(edtFindText.getText().toString().trim(), "");
-                    tvOutput.setText("Output: " + input);
-                    result = input;
-                } else if (edtFindText.getText().toString().isEmpty() && !edtReplaceWith.getText().toString().isEmpty()) {
-                    Toast.makeText(ReplaceTextActivity.this, "Please enter Find Text", Toast.LENGTH_SHORT).show();
+                if (!edtInput.getText().toString().trim().isEmpty()) {
+                    processText();
+                    outputLayout.setVisibility(View.VISIBLE);
                 } else {
-                    tvOutput.setText("Output: " + input.replace(edtFindText.getText().toString().trim(),
-                            edtReplaceWith.getText().toString().trim()));
-                    result = input.replace(edtFindText.getText().toString().trim(),
-                            edtReplaceWith.getText().toString().trim());
+                    Toast.makeText(getApplicationContext(), "Please enter input", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 
@@ -114,6 +89,7 @@ public class ReplaceTextActivity extends AppCompatActivity implements AdInterfac
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
+                    handleButton(false);
                     RewardAdUtil rewardAdUtil = new RewardAdUtil(ReplaceTextActivity.this, adInterface, "SHARE");
                     rewardAdUtil.showRewardAd();
                 } else {
@@ -126,6 +102,7 @@ public class ReplaceTextActivity extends AppCompatActivity implements AdInterfac
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
+                    handleButton(false);
                     RewardAdUtil rewardAdUtil = new RewardAdUtil(ReplaceTextActivity.this, adInterface, "COPY");
                     rewardAdUtil.showRewardAd();
                 } else {
@@ -138,6 +115,7 @@ public class ReplaceTextActivity extends AppCompatActivity implements AdInterfac
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
+                    handleButton(false);
                     RewardAdUtil rewardAdUtil = new RewardAdUtil(ReplaceTextActivity.this, adInterface, "SAVE");
                     rewardAdUtil.showRewardAd();
                 } else {
@@ -145,32 +123,76 @@ public class ReplaceTextActivity extends AppCompatActivity implements AdInterfac
                 }
             }
         });
+    }
 
+    private void processText() {
+        String originalText = edtInput.getText().toString().trim();
+        String findText = edtFindText.getText().toString().trim();
+        String replaceText = edtReplaceWith.getText().toString().trim();
+
+        String outputText = "";
+        String inputText = originalText;
+
+        if (cbLowercase.isChecked()) {
+            inputText = inputText.toLowerCase();
+        }
+
+        if (cbReverseText.isChecked()) {
+            StringBuffer buffer = new StringBuffer(inputText);
+            inputText = buffer.reverse().toString();
+        }
+        outputText = inputText.replaceAll(findText, replaceText);
+
+        if (cbCountWord.isChecked()) {
+            tvInputWord.setVisibility(View.VISIBLE);
+            tvOutputWord.setVisibility(View.VISIBLE);
+        } else {
+            tvInputWord.setVisibility(View.GONE);
+            tvOutputWord.setVisibility(View.GONE);
+        }
+
+        if (cbCountLetter.isChecked()) {
+            tvInputLetter.setVisibility(View.VISIBLE);
+            tvOutputLetter.setVisibility(View.VISIBLE);
+        } else {
+            tvInputLetter.setVisibility(View.GONE);
+            tvOutputLetter.setVisibility(View.GONE);
+        }
+
+        tvOutput.setText(outputText);
+        tvOutputLetter.setText("Total Output letters:- " + outputText.replaceAll(" ", "").length());
+        tvInputLetter.setText("Total Input letters:- " + inputText.replaceAll(" ", "").length());
+        tvOutputWord.setText("Total Output Words :- " + countWords(outputText));
+        tvInputWord.setText("Total Input Words :- " + countWords(originalText));
+
+        result = outputText;
+    }
+
+    public int countWords(String text) {
+        text = text.replaceAll("\\s{2,}", " ").trim();
+        String words[] = text.trim().split(" ");
+        return words.length;
+    }
+
+    public void handleButton(boolean enableButton) {
+        shareLayout.setEnabled(enableButton);
+        copyLayout.setEnabled(enableButton);
+        saveLayout.setEnabled(enableButton);
     }
 
     @Override
     public void rewardAdLoaded(String msg, String buttonClicked) {
-        if (msg.equals("DONE")) {
+        if (msg.equals("ENABLE_Button")) {
+            handleButton(true);
+        } else {
             if (buttonClicked.equals("SHARE")) {
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, result);
-                sendIntent.setType("text/plain");
-                startActivity(sendIntent);
+                globalFunction.shareMsg(result);
             } else if (buttonClicked.equals("COPY")) {
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("label", result);
-                clipboard.setPrimaryClip(clip);
-                Toast.makeText(ReplaceTextActivity.this, "Output Copied", Toast.LENGTH_SHORT).show();
+                globalFunction.copyOutput(result);
             } else if (buttonClicked.equals("SAVE")) {
-                Database database = new Database(ReplaceTextActivity.this);
-                long res = database.saveData(new SaveModel(0, result));
-                if (res != -1) {
-                    Toast.makeText(ReplaceTextActivity.this, "Output Saved", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(ReplaceTextActivity.this, "Failed To Save Output", Toast.LENGTH_SHORT).show();
-                }
+                globalFunction.saveOutput(result);
             }
+            handleButton(true);
         }
     }
 

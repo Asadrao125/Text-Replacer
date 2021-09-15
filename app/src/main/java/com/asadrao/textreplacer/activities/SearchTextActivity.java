@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -23,16 +24,22 @@ import android.widget.Toast;
 import com.asadrao.textreplacer.R;
 import com.asadrao.textreplacer.SaveModel;
 import com.asadrao.textreplacer.ads.AdInterface;
+import com.asadrao.textreplacer.ads.AdUtil;
 import com.asadrao.textreplacer.ads.RewardAdUtil;
 import com.asadrao.textreplacer.utils.Database;
+import com.asadrao.textreplacer.utils.GlobalFunction;
+import com.google.android.gms.ads.AdView;
 
 public class SearchTextActivity extends AppCompatActivity implements AdInterface {
     EditText edtInput, edtSearchFor;
     TextView tvOutput;
+    LinearLayout outputLayout;
     Button btnSearchText;
     CheckBox cbLowercase, cbCountWithSpaces;
     LinearLayout shareLayout, copyLayout, saveLayout;
     String result;
+    AdView adView;
+    GlobalFunction globalFunction;
     AdInterface adInterface;
 
     @Override
@@ -52,6 +59,12 @@ public class SearchTextActivity extends AppCompatActivity implements AdInterface
         copyLayout = findViewById(R.id.copyLayout);
         saveLayout = findViewById(R.id.saveLayout);
         adInterface = SearchTextActivity.this;
+        outputLayout = findViewById(R.id.outputLayout);
+        globalFunction = new GlobalFunction(this);
+
+        adView = findViewById(R.id.adView);
+        AdUtil adUtil = new AdUtil(this, adInterface);
+        adUtil.loadBannerAd(adView);
 
         btnSearchText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +74,7 @@ public class SearchTextActivity extends AppCompatActivity implements AdInterface
                 String searchFor = edtSearchFor.getText().toString().trim();
                 String temp = input;
                 if (!input.isEmpty() && !searchFor.isEmpty()) {
-
+                    outputLayout.setVisibility(View.VISIBLE);
                     if (cbLowercase.isChecked()) {
                         input = input.toLowerCase();
                         tvOutput.setText(input);
@@ -72,12 +85,12 @@ public class SearchTextActivity extends AppCompatActivity implements AdInterface
                     }
 
                     if (cbCountWithSpaces.isChecked()) {
-                        temp = temp.trim().replace(" ", "");
-                        tvOutput.setText(temp);
-                        result = temp;
+                        Log.d("lkjhg", "onClick: " + removeSpace(temp));
+                        tvOutput.setText(removeSpace(temp));
+                        result = removeSpace(temp);
                     } else {
-                        tvOutput.setText(input.trim());
-                        result = input.trim();
+                        tvOutput.setText(input);
+                        result = input;
                     }
 
                     if (input.contains(searchFor)) {
@@ -87,6 +100,7 @@ public class SearchTextActivity extends AppCompatActivity implements AdInterface
                     }
 
                 } else {
+                    outputLayout.setVisibility(View.GONE);
                     Toast.makeText(SearchTextActivity.this, "Please enter input", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -96,6 +110,7 @@ public class SearchTextActivity extends AppCompatActivity implements AdInterface
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
+                    handleButton(false);
                     RewardAdUtil rewardAdUtil = new RewardAdUtil(SearchTextActivity.this, adInterface, "SHARE");
                     rewardAdUtil.showRewardAd();
                 } else {
@@ -108,6 +123,7 @@ public class SearchTextActivity extends AppCompatActivity implements AdInterface
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
+                    handleButton(false);
                     RewardAdUtil rewardAdUtil = new RewardAdUtil(SearchTextActivity.this, adInterface, "COPY");
                     rewardAdUtil.showRewardAd();
                 } else {
@@ -120,6 +136,7 @@ public class SearchTextActivity extends AppCompatActivity implements AdInterface
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
+                    handleButton(false);
                     RewardAdUtil rewardAdUtil = new RewardAdUtil(SearchTextActivity.this, adInterface, "SAVE");
                     rewardAdUtil.showRewardAd();
                 } else {
@@ -130,30 +147,36 @@ public class SearchTextActivity extends AppCompatActivity implements AdInterface
 
     }
 
+    public void handleButton(boolean enableButton) {
+        shareLayout.setEnabled(enableButton);
+        copyLayout.setEnabled(enableButton);
+        saveLayout.setEnabled(enableButton);
+    }
+
     @Override
     public void rewardAdLoaded(String msg, String buttonClicked) {
-        if (msg.equals("DONE")) {
+        if (msg.equals("ENABLE_Button")) {
+            handleButton(true);
+        } else {
             if (buttonClicked.equals("SHARE")) {
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, result);
-                sendIntent.setType("text/plain");
-                startActivity(sendIntent);
+                globalFunction.shareMsg(result);
             } else if (buttonClicked.equals("COPY")) {
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("label", result);
-                clipboard.setPrimaryClip(clip);
-                Toast.makeText(SearchTextActivity.this, "Output Copied", Toast.LENGTH_SHORT).show();
+                globalFunction.copyOutput(result);
             } else if (buttonClicked.equals("SAVE")) {
-                Database database = new Database(SearchTextActivity.this);
-                long res = database.saveData(new SaveModel(0, result));
-                if (res != -1) {
-                    Toast.makeText(SearchTextActivity.this, "Output Saved", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(SearchTextActivity.this, "Failed To Save Output", Toast.LENGTH_SHORT).show();
-                }
+                globalFunction.saveOutput(result);
             }
+            handleButton(true);
         }
+    }
+
+    public static String removeSpace(String s) {
+        String withoutspaces = "";
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) != ' ')
+                withoutspaces += s.charAt(i);
+
+        }
+        return withoutspaces;
     }
 
     @Override

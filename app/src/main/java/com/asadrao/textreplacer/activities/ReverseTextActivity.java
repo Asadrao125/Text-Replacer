@@ -21,8 +21,11 @@ import android.widget.Toast;
 import com.asadrao.textreplacer.R;
 import com.asadrao.textreplacer.SaveModel;
 import com.asadrao.textreplacer.ads.AdInterface;
+import com.asadrao.textreplacer.ads.AdUtil;
 import com.asadrao.textreplacer.ads.RewardAdUtil;
 import com.asadrao.textreplacer.utils.Database;
+import com.asadrao.textreplacer.utils.GlobalFunction;
+import com.google.android.gms.ads.AdView;
 
 public class ReverseTextActivity extends AppCompatActivity implements AdInterface {
     Button btnReverseText;
@@ -30,6 +33,9 @@ public class ReverseTextActivity extends AppCompatActivity implements AdInterfac
     TextView tvOutput;
     LinearLayout shareLayout, copyLayout, saveLayout;
     String result;
+    GlobalFunction globalFunction;
+    AdView adView;
+    LinearLayout outputLayout;
     AdInterface adInterface;
 
     @Override
@@ -46,6 +52,12 @@ public class ReverseTextActivity extends AppCompatActivity implements AdInterfac
         copyLayout = findViewById(R.id.copyLayout);
         saveLayout = findViewById(R.id.saveLayout);
         adInterface = ReverseTextActivity.this;
+        outputLayout = findViewById(R.id.outputLayout);
+        globalFunction = new GlobalFunction(this);
+
+        adView = findViewById(R.id.adView);
+        AdUtil adUtil = new AdUtil(this, adInterface);
+        adUtil.loadBannerAd(adView);
 
         btnReverseText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,10 +65,12 @@ public class ReverseTextActivity extends AppCompatActivity implements AdInterfac
                 hideKeyboard(ReverseTextActivity.this);
                 String input = edtInput.getText().toString().trim();
                 if (!input.isEmpty()) {
+                    outputLayout.setVisibility(View.VISIBLE);
                     StringBuffer buffer = new StringBuffer(input);
                     tvOutput.setText(buffer.reverse());
                     result = "" + buffer.reverse();
                 } else {
+                    outputLayout.setVisibility(View.GONE);
                     Toast.makeText(ReverseTextActivity.this, "Please enter input", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -66,6 +80,7 @@ public class ReverseTextActivity extends AppCompatActivity implements AdInterfac
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
+                    handleButton(false);
                     RewardAdUtil rewardAdUtil = new RewardAdUtil(ReverseTextActivity.this, adInterface, "SHARE");
                     rewardAdUtil.showRewardAd();
                 } else {
@@ -78,6 +93,7 @@ public class ReverseTextActivity extends AppCompatActivity implements AdInterfac
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
+                    handleButton(false);
                     RewardAdUtil rewardAdUtil = new RewardAdUtil(ReverseTextActivity.this, adInterface, "COPY");
                     rewardAdUtil.showRewardAd();
                 } else {
@@ -90,6 +106,7 @@ public class ReverseTextActivity extends AppCompatActivity implements AdInterfac
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
+                    handleButton(false);
                     RewardAdUtil rewardAdUtil = new RewardAdUtil(ReverseTextActivity.this, adInterface, "SAVE");
                     rewardAdUtil.showRewardAd();
                 } else {
@@ -97,32 +114,27 @@ public class ReverseTextActivity extends AppCompatActivity implements AdInterfac
                 }
             }
         });
+    }
 
+    public void handleButton(boolean enableButton) {
+        shareLayout.setEnabled(enableButton);
+        copyLayout.setEnabled(enableButton);
+        saveLayout.setEnabled(enableButton);
     }
 
     @Override
     public void rewardAdLoaded(String msg, String buttonClicked) {
-        if (msg.equals("DONE")) {
+        if (msg.equals("ENABLE_Button")) {
+            handleButton(true);
+        } else {
             if (buttonClicked.equals("SHARE")) {
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, result);
-                sendIntent.setType("text/plain");
-                startActivity(sendIntent);
+                globalFunction.shareMsg(tvOutput.getText().toString().trim());
             } else if (buttonClicked.equals("COPY")) {
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("label", result);
-                clipboard.setPrimaryClip(clip);
-                Toast.makeText(ReverseTextActivity.this, "Output Copied", Toast.LENGTH_SHORT).show();
+                globalFunction.copyOutput(tvOutput.getText().toString().trim());
             } else if (buttonClicked.equals("SAVE")) {
-                Database database = new Database(ReverseTextActivity.this);
-                long res = database.saveData(new SaveModel(0, result));
-                if (res != -1) {
-                    Toast.makeText(ReverseTextActivity.this, "Output Saved", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(ReverseTextActivity.this, "Failed To Save Output", Toast.LENGTH_SHORT).show();
-                }
+                globalFunction.saveOutput(tvOutput.getText().toString().trim());
             }
+            handleButton(true);
         }
     }
 

@@ -12,15 +12,22 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.asadrao.textreplacer.R;
+import com.asadrao.textreplacer.ads.AdInterface;
+import com.asadrao.textreplacer.ads.AdUtil;
+import com.google.android.gms.ads.AdView;
 
 public class CountTextActivity extends AppCompatActivity {
     EditText edtInput;
     CheckBox checkBox;
     Button btnCountText;
+    AdView adView;
+    LinearLayout outputLayout;
+    AdInterface adInterface;
     TextView tvTotalWords, tvTotalLetters;
 
     @Override
@@ -35,6 +42,11 @@ public class CountTextActivity extends AppCompatActivity {
         tvTotalWords = findViewById(R.id.tvTotalWords);
         tvTotalLetters = findViewById(R.id.tvTotalLetters);
         checkBox = findViewById(R.id.checkBox);
+        outputLayout = findViewById(R.id.outputLayout);
+
+        adView = findViewById(R.id.adView);
+        AdUtil adUtil = new AdUtil(this, adInterface);
+        adUtil.loadBannerAd(adView);
 
         btnCountText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,6 +55,8 @@ public class CountTextActivity extends AppCompatActivity {
                 String input = edtInput.getText().toString();
                 String temp = input;
                 if (!input.isEmpty()) {
+
+                    outputLayout.setVisibility(View.VISIBLE);
 
                     input = input.replaceAll("\\s{2,}", " ").trim();
                     String words[] = input.trim().split(" ");
@@ -59,6 +73,7 @@ public class CountTextActivity extends AppCompatActivity {
                     }
 
                 } else {
+                    outputLayout.setVisibility(View.GONE);
                     Toast.makeText(CountTextActivity.this, "Please enter input", Toast.LENGTH_SHORT).show();
                 }
             }

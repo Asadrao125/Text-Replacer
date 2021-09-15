@@ -26,6 +26,7 @@ import com.asadrao.textreplacer.ads.AdInterface;
 import com.asadrao.textreplacer.ads.AdUtil;
 import com.asadrao.textreplacer.ads.RewardAdUtil;
 import com.asadrao.textreplacer.utils.Database;
+import com.asadrao.textreplacer.utils.GlobalFunction;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 
@@ -40,7 +41,9 @@ public class CloneTextActivity extends AppCompatActivity implements AdInterface 
     TextView tvOutput;
     Button btnCloneText;
     AdInterface adInterface;
+    LinearLayout outputLayout;
     EditText edtInput, edtCloneLimit;
+    GlobalFunction globalFunction;
     LinearLayout shareLayout, copyLayout, saveLayout;
 
     @Override
@@ -55,15 +58,15 @@ public class CloneTextActivity extends AppCompatActivity implements AdInterface 
         edtInput = findViewById(R.id.edtInput);
         edtCloneLimit = findViewById(R.id.edtCloneLimit);
         adInterface = CloneTextActivity.this;
-
         shareLayout = findViewById(R.id.shareLayout);
         copyLayout = findViewById(R.id.copyLayout);
         saveLayout = findViewById(R.id.saveLayout);
+        outputLayout = findViewById(R.id.outputLayout);
+        globalFunction = new GlobalFunction(this);
 
         adView = findViewById(R.id.adView);
         AdUtil adUtil = new AdUtil(this, adInterface);
         adUtil.loadBannerAd(adView);
-        adUtil.showInterstial();
 
         btnCloneText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +75,7 @@ public class CloneTextActivity extends AppCompatActivity implements AdInterface 
                 String input = edtInput.getText().toString().trim();
                 String num = edtCloneLimit.getText().toString().trim();
                 if (!input.isEmpty() && !num.isEmpty()) {
+                    outputLayout.setVisibility(View.VISIBLE);
                     int limit = Integer.parseInt(num);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         tvOutput.setText(String.join("", Collections.nCopies(limit, input)));
@@ -81,6 +85,7 @@ public class CloneTextActivity extends AppCompatActivity implements AdInterface 
                         tvOutput.setText(String.format("%0" + limit + "d", 0).replace("0", input));
                     }
                 } else {
+                    outputLayout.setVisibility(View.GONE);
                     Toast.makeText(CloneTextActivity.this, "Please enter input and limit", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -90,6 +95,7 @@ public class CloneTextActivity extends AppCompatActivity implements AdInterface 
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
+                    handleButton(false);
                     RewardAdUtil rewardAdUtil = new RewardAdUtil(CloneTextActivity.this, adInterface, "SHARE");
                     rewardAdUtil.showRewardAd();
                 } else {
@@ -102,6 +108,7 @@ public class CloneTextActivity extends AppCompatActivity implements AdInterface 
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
+                    handleButton(false);
                     RewardAdUtil rewardAdUtil = new RewardAdUtil(CloneTextActivity.this, adInterface, "COPY");
                     rewardAdUtil.showRewardAd();
                 } else {
@@ -114,6 +121,7 @@ public class CloneTextActivity extends AppCompatActivity implements AdInterface 
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
+                    handleButton(false);
                     RewardAdUtil rewardAdUtil = new RewardAdUtil(CloneTextActivity.this, adInterface, "SAVE");
                     rewardAdUtil.showRewardAd();
                 } else {
@@ -121,33 +129,28 @@ public class CloneTextActivity extends AppCompatActivity implements AdInterface 
                 }
             }
         });
-
     }
 
     @Override
     public void rewardAdLoaded(String msg, String buttonClicked) {
-        if (msg.equals("DONE")) {
+        if (msg.equals("ENABLE_Button")) {
+            handleButton(true);
+        } else {
             if (buttonClicked.equals("SHARE")) {
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, result);
-                sendIntent.setType("text/plain");
-                startActivity(sendIntent);
+                globalFunction.shareMsg(result);
             } else if (buttonClicked.equals("COPY")) {
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("label", result);
-                clipboard.setPrimaryClip(clip);
-                Toast.makeText(CloneTextActivity.this, "Output Copied", Toast.LENGTH_SHORT).show();
+                globalFunction.copyOutput(result);
             } else if (buttonClicked.equals("SAVE")) {
-                Database database = new Database(CloneTextActivity.this);
-                long res = database.saveData(new SaveModel(0, result));
-                if (res != -1) {
-                    Toast.makeText(CloneTextActivity.this, "Output Saved", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(CloneTextActivity.this, "Failed To Save Output", Toast.LENGTH_SHORT).show();
-                }
+                globalFunction.saveOutput(result);
             }
+            handleButton(true);
         }
+    }
+
+    public void handleButton(boolean enableButton) {
+        shareLayout.setEnabled(enableButton);
+        copyLayout.setEnabled(enableButton);
+        saveLayout.setEnabled(enableButton);
     }
 
     @Override

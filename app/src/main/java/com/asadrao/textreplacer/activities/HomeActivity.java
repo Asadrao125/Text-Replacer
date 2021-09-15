@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.asadrao.textreplacer.BuildConfig;
 import com.asadrao.textreplacer.R;
 import com.asadrao.textreplacer.SaveModel;
+import com.asadrao.textreplacer.ads.AdInterface;
 import com.asadrao.textreplacer.ads.AdUtil;
 import com.asadrao.textreplacer.utils.Database;
 import com.google.android.gms.ads.AdView;
@@ -30,6 +31,7 @@ import com.google.android.gms.ads.initialization.OnInitializationCompleteListene
 
 public class HomeActivity extends AppCompatActivity {
     TextView tvVersionName;
+    AdInterface adInterface;
     LinearLayout shareLayout, moreLayout, saveDataLayout;
     CardView cvReplace, cvSearch, cvCount, cvClone, cvReverse, cvMark;
 
@@ -37,6 +39,10 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        AdUtil adUtil = new AdUtil(HomeActivity.this, adInterface);
+        //adUtil.showInterstial();
+
 
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
