@@ -44,7 +44,7 @@ public class RewardAdUtil {
             @Override
             public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
 
-                adInterface.rewardAdLoaded("ENABLE_Button", buttonClicked);
+                //adInterface.rewardAdLoaded("ENABLE_Button", buttonClicked);
 
                 super.onAdLoaded(rewardedAd);
                 rewardedAd.show(activity, new OnUserEarnedRewardListener() {

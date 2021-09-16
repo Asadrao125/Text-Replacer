@@ -66,9 +66,13 @@ public class ReverseTextActivity extends AppCompatActivity implements AdInterfac
                 String input = edtInput.getText().toString().trim();
                 if (!input.isEmpty()) {
                     outputLayout.setVisibility(View.VISIBLE);
+
+                    handleButton(false);
+                    RewardAdUtil rewardAdUtil = new RewardAdUtil(ReverseTextActivity.this, adInterface, "SHARE");
+                    rewardAdUtil.showRewardAd();
+
                     StringBuffer buffer = new StringBuffer(input);
                     tvOutput.setText(buffer.reverse());
-                    result = "" + buffer.reverse();
                 } else {
                     outputLayout.setVisibility(View.GONE);
                     Toast.makeText(ReverseTextActivity.this, "Please enter input", Toast.LENGTH_SHORT).show();
@@ -80,9 +84,7 @@ public class ReverseTextActivity extends AppCompatActivity implements AdInterfac
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
-                    handleButton(false);
-                    RewardAdUtil rewardAdUtil = new RewardAdUtil(ReverseTextActivity.this, adInterface, "SHARE");
-                    rewardAdUtil.showRewardAd();
+                    globalFunction.shareMsg(tvOutput.getText().toString());
                 } else {
                     Toast.makeText(getApplicationContext(), "No Output To Share", Toast.LENGTH_SHORT).show();
                 }
@@ -93,9 +95,7 @@ public class ReverseTextActivity extends AppCompatActivity implements AdInterfac
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
-                    handleButton(false);
-                    RewardAdUtil rewardAdUtil = new RewardAdUtil(ReverseTextActivity.this, adInterface, "COPY");
-                    rewardAdUtil.showRewardAd();
+                    globalFunction.copyOutput(tvOutput.getText().toString());
                 } else {
                     Toast.makeText(getApplicationContext(), "No Output To Share", Toast.LENGTH_SHORT).show();
                 }
@@ -106,9 +106,7 @@ public class ReverseTextActivity extends AppCompatActivity implements AdInterfac
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
-                    handleButton(false);
-                    RewardAdUtil rewardAdUtil = new RewardAdUtil(ReverseTextActivity.this, adInterface, "SAVE");
-                    rewardAdUtil.showRewardAd();
+                    globalFunction.saveOutput(tvOutput.getText().toString());
                 } else {
                     Toast.makeText(getApplicationContext(), "No Output To Share", Toast.LENGTH_SHORT).show();
                 }
@@ -124,18 +122,7 @@ public class ReverseTextActivity extends AppCompatActivity implements AdInterfac
 
     @Override
     public void rewardAdLoaded(String msg, String buttonClicked) {
-        if (msg.equals("ENABLE_Button")) {
-            handleButton(true);
-        } else {
-            if (buttonClicked.equals("SHARE")) {
-                globalFunction.shareMsg(tvOutput.getText().toString().trim());
-            } else if (buttonClicked.equals("COPY")) {
-                globalFunction.copyOutput(tvOutput.getText().toString().trim());
-            } else if (buttonClicked.equals("SAVE")) {
-                globalFunction.saveOutput(tvOutput.getText().toString().trim());
-            }
-            handleButton(true);
-        }
+        handleButton(true);
     }
 
     public static void hideKeyboard(Activity activity) {

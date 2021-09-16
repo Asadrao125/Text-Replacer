@@ -73,9 +73,13 @@ public class MarkTextActivity extends AppCompatActivity implements AdInterface {
                 String num = edtTotalWord.getText().toString().trim();
                 if (!input.isEmpty() && !num.isEmpty()) {
                     outputLayout.setVisibility(View.VISIBLE);
+
+                    handleButton(false);
+                    RewardAdUtil rewardAdUtil = new RewardAdUtil(MarkTextActivity.this, adInterface, "SHARE");
+                    rewardAdUtil.showRewardAd();
+
                     int totalWord = Integer.parseInt(num);
                     if (totalWord <= input.length()) {
-                        outputLayout.setVisibility(View.VISIBLE);
                         String val = input.substring(0, totalWord);
                         String newS = input.replace(val, "");
                         String next = "<font color='#EE0000'>" + val + "</font>";
@@ -97,9 +101,7 @@ public class MarkTextActivity extends AppCompatActivity implements AdInterface {
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
-                    handleButton(false);
-                    RewardAdUtil rewardAdUtil = new RewardAdUtil(MarkTextActivity.this, adInterface, "SHARE");
-                    rewardAdUtil.showRewardAd();
+                    globalFunction.shareMsg(tvOutput.getText().toString());
                 } else {
                     Toast.makeText(getApplicationContext(), "No Output To Share", Toast.LENGTH_SHORT).show();
                 }
@@ -110,9 +112,7 @@ public class MarkTextActivity extends AppCompatActivity implements AdInterface {
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
-                    handleButton(false);
-                    RewardAdUtil rewardAdUtil = new RewardAdUtil(MarkTextActivity.this, adInterface, "COPY");
-                    rewardAdUtil.showRewardAd();
+                    globalFunction.copyOutput(tvOutput.getText().toString());
                 } else {
                     Toast.makeText(getApplicationContext(), "No Output To Share", Toast.LENGTH_SHORT).show();
                 }
@@ -123,9 +123,7 @@ public class MarkTextActivity extends AppCompatActivity implements AdInterface {
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
-                    handleButton(false);
-                    RewardAdUtil rewardAdUtil = new RewardAdUtil(MarkTextActivity.this, adInterface, "SAVE");
-                    rewardAdUtil.showRewardAd();
+                    globalFunction.saveOutput(tvOutput.getText().toString());
                 } else {
                     Toast.makeText(getApplicationContext(), "No Output To Share", Toast.LENGTH_SHORT).show();
                 }
@@ -142,18 +140,7 @@ public class MarkTextActivity extends AppCompatActivity implements AdInterface {
 
     @Override
     public void rewardAdLoaded(String msg, String buttonClicked) {
-        if (msg.equals("ENABLE_Button")) {
-            handleButton(true);
-        } else {
-            if (buttonClicked.equals("SHARE")) {
-                globalFunction.shareMsg(result);
-            } else if (buttonClicked.equals("COPY")) {
-                globalFunction.copyOutput(result);
-            } else if (buttonClicked.equals("SAVE")) {
-                globalFunction.saveOutput(result);
-            }
-            handleButton(true);
-        }
+        handleButton(true);
     }
 
     public static void hideKeyboard(Activity activity) {

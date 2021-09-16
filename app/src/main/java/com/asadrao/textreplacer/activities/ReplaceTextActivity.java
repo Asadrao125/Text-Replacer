@@ -79,6 +79,9 @@ public class ReplaceTextActivity extends AppCompatActivity implements AdInterfac
                 if (!edtInput.getText().toString().trim().isEmpty()) {
                     processText();
                     outputLayout.setVisibility(View.VISIBLE);
+                    handleButton(false);
+                    RewardAdUtil rewardAdUtil = new RewardAdUtil(ReplaceTextActivity.this, adInterface, "SHARE");
+                    rewardAdUtil.showRewardAd();
                 } else {
                     Toast.makeText(getApplicationContext(), "Please enter input", Toast.LENGTH_SHORT).show();
                 }
@@ -89,9 +92,7 @@ public class ReplaceTextActivity extends AppCompatActivity implements AdInterfac
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
-                    handleButton(false);
-                    RewardAdUtil rewardAdUtil = new RewardAdUtil(ReplaceTextActivity.this, adInterface, "SHARE");
-                    rewardAdUtil.showRewardAd();
+                    globalFunction.shareMsg(result);
                 } else {
                     Toast.makeText(getApplicationContext(), "No Output To Share", Toast.LENGTH_SHORT).show();
                 }
@@ -102,9 +103,7 @@ public class ReplaceTextActivity extends AppCompatActivity implements AdInterfac
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
-                    handleButton(false);
-                    RewardAdUtil rewardAdUtil = new RewardAdUtil(ReplaceTextActivity.this, adInterface, "COPY");
-                    rewardAdUtil.showRewardAd();
+                    globalFunction.copyOutput(result);
                 } else {
                     Toast.makeText(getApplicationContext(), "No Output To Share", Toast.LENGTH_SHORT).show();
                 }
@@ -115,9 +114,7 @@ public class ReplaceTextActivity extends AppCompatActivity implements AdInterfac
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
-                    handleButton(false);
-                    RewardAdUtil rewardAdUtil = new RewardAdUtil(ReplaceTextActivity.this, adInterface, "SAVE");
-                    rewardAdUtil.showRewardAd();
+                    globalFunction.saveOutput(result);
                 } else {
                     Toast.makeText(getApplicationContext(), "No Output To Share", Toast.LENGTH_SHORT).show();
                 }
@@ -182,18 +179,7 @@ public class ReplaceTextActivity extends AppCompatActivity implements AdInterfac
 
     @Override
     public void rewardAdLoaded(String msg, String buttonClicked) {
-        if (msg.equals("ENABLE_Button")) {
-            handleButton(true);
-        } else {
-            if (buttonClicked.equals("SHARE")) {
-                globalFunction.shareMsg(result);
-            } else if (buttonClicked.equals("COPY")) {
-                globalFunction.copyOutput(result);
-            } else if (buttonClicked.equals("SAVE")) {
-                globalFunction.saveOutput(result);
-            }
-            handleButton(true);
-        }
+        handleButton(true);
     }
 
     @Override

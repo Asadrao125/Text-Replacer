@@ -26,6 +26,7 @@ import com.asadrao.textreplacer.ads.AdInterface;
 import com.asadrao.textreplacer.ads.AdUtil;
 import com.asadrao.textreplacer.ads.RewardAdUtil;
 import com.asadrao.textreplacer.utils.Database;
+import com.asadrao.textreplacer.utils.DialogClass;
 import com.asadrao.textreplacer.utils.GlobalFunction;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.rewarded.RewardedAd;
@@ -78,6 +79,11 @@ public class CloneTextActivity extends AppCompatActivity implements AdInterface 
                     outputLayout.setVisibility(View.VISIBLE);
                     int limit = Integer.parseInt(num);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+                        handleButton(false);
+                        RewardAdUtil rewardAdUtil = new RewardAdUtil(CloneTextActivity.this, adInterface, "SHARE");
+                        rewardAdUtil.showRewardAd();
+
                         tvOutput.setText(String.join("", Collections.nCopies(limit, input)));
                         result = String.join("", Collections.nCopies(limit, input));
                     } else {
@@ -95,9 +101,7 @@ public class CloneTextActivity extends AppCompatActivity implements AdInterface 
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
-                    handleButton(false);
-                    RewardAdUtil rewardAdUtil = new RewardAdUtil(CloneTextActivity.this, adInterface, "SHARE");
-                    rewardAdUtil.showRewardAd();
+                    globalFunction.shareMsg(tvOutput.getText().toString());
                 } else {
                     Toast.makeText(getApplicationContext(), "No Output To Share", Toast.LENGTH_SHORT).show();
                 }
@@ -108,9 +112,7 @@ public class CloneTextActivity extends AppCompatActivity implements AdInterface 
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
-                    handleButton(false);
-                    RewardAdUtil rewardAdUtil = new RewardAdUtil(CloneTextActivity.this, adInterface, "COPY");
-                    rewardAdUtil.showRewardAd();
+                    globalFunction.copyOutput(tvOutput.getText().toString());
                 } else {
                     Toast.makeText(getApplicationContext(), "No Output To Share", Toast.LENGTH_SHORT).show();
                 }
@@ -121,9 +123,7 @@ public class CloneTextActivity extends AppCompatActivity implements AdInterface 
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
-                    handleButton(false);
-                    RewardAdUtil rewardAdUtil = new RewardAdUtil(CloneTextActivity.this, adInterface, "SAVE");
-                    rewardAdUtil.showRewardAd();
+                    globalFunction.saveOutput(tvOutput.getText().toString());
                 } else {
                     Toast.makeText(getApplicationContext(), "No Output To Share", Toast.LENGTH_SHORT).show();
                 }
@@ -133,18 +133,7 @@ public class CloneTextActivity extends AppCompatActivity implements AdInterface 
 
     @Override
     public void rewardAdLoaded(String msg, String buttonClicked) {
-        if (msg.equals("ENABLE_Button")) {
-            handleButton(true);
-        } else {
-            if (buttonClicked.equals("SHARE")) {
-                globalFunction.shareMsg(result);
-            } else if (buttonClicked.equals("COPY")) {
-                globalFunction.copyOutput(result);
-            } else if (buttonClicked.equals("SAVE")) {
-                globalFunction.saveOutput(result);
-            }
-            handleButton(true);
-        }
+        handleButton(true);
     }
 
     public void handleButton(boolean enableButton) {

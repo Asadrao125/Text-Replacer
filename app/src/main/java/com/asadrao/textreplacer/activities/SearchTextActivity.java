@@ -75,6 +75,11 @@ public class SearchTextActivity extends AppCompatActivity implements AdInterface
                 String temp = input;
                 if (!input.isEmpty() && !searchFor.isEmpty()) {
                     outputLayout.setVisibility(View.VISIBLE);
+
+                    handleButton(false);
+                    RewardAdUtil rewardAdUtil = new RewardAdUtil(SearchTextActivity.this, adInterface, "SHARE");
+                    rewardAdUtil.showRewardAd();
+
                     if (cbLowercase.isChecked()) {
                         input = input.toLowerCase();
                         tvOutput.setText(input);
@@ -110,9 +115,7 @@ public class SearchTextActivity extends AppCompatActivity implements AdInterface
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
-                    handleButton(false);
-                    RewardAdUtil rewardAdUtil = new RewardAdUtil(SearchTextActivity.this, adInterface, "SHARE");
-                    rewardAdUtil.showRewardAd();
+                    globalFunction.shareMsg(tvOutput.getText().toString());
                 } else {
                     Toast.makeText(getApplicationContext(), "No Output To Share", Toast.LENGTH_SHORT).show();
                 }
@@ -123,9 +126,7 @@ public class SearchTextActivity extends AppCompatActivity implements AdInterface
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
-                    handleButton(false);
-                    RewardAdUtil rewardAdUtil = new RewardAdUtil(SearchTextActivity.this, adInterface, "COPY");
-                    rewardAdUtil.showRewardAd();
+                    globalFunction.copyOutput(tvOutput.getText().toString());
                 } else {
                     Toast.makeText(getApplicationContext(), "No Output To Share", Toast.LENGTH_SHORT).show();
                 }
@@ -136,9 +137,7 @@ public class SearchTextActivity extends AppCompatActivity implements AdInterface
             @Override
             public void onClick(View view) {
                 if (!tvOutput.getText().toString().equals("Output")) {
-                    handleButton(false);
-                    RewardAdUtil rewardAdUtil = new RewardAdUtil(SearchTextActivity.this, adInterface, "SAVE");
-                    rewardAdUtil.showRewardAd();
+                    globalFunction.saveOutput(tvOutput.getText().toString());
                 } else {
                     Toast.makeText(getApplicationContext(), "No Output To Share", Toast.LENGTH_SHORT).show();
                 }
@@ -155,18 +154,7 @@ public class SearchTextActivity extends AppCompatActivity implements AdInterface
 
     @Override
     public void rewardAdLoaded(String msg, String buttonClicked) {
-        if (msg.equals("ENABLE_Button")) {
-            handleButton(true);
-        } else {
-            if (buttonClicked.equals("SHARE")) {
-                globalFunction.shareMsg(result);
-            } else if (buttonClicked.equals("COPY")) {
-                globalFunction.copyOutput(result);
-            } else if (buttonClicked.equals("SAVE")) {
-                globalFunction.saveOutput(result);
-            }
-            handleButton(true);
-        }
+        handleButton(true);
     }
 
     public static String removeSpace(String s) {
