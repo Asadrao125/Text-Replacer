@@ -41,7 +41,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         AdUtil adUtil = new AdUtil(HomeActivity.this, adInterface);
-        //adUtil.showInterstial();
+        adUtil.showInterstial();
 
 
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
