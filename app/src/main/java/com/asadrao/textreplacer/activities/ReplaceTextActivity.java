@@ -9,6 +9,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -36,6 +37,7 @@ public class ReplaceTextActivity extends AppCompatActivity implements AdInterfac
     TextView tvOutput, tvInputWord, tvOutputWord, tvInputLetter, tvOutputLetter;
     CheckBox cbLowercase, cbCountWord, cbCountLetter, cbReverseText;
     LinearLayout shareLayout, copyLayout, saveLayout;
+    LinearLayout inputWordLayout, outputWordLayout, inputLetterLayout, outputLetterLayout;
     String result;
     AdInterface adInterface;
     LinearLayout outputLayout;
@@ -66,6 +68,10 @@ public class ReplaceTextActivity extends AppCompatActivity implements AdInterfac
         copyLayout = findViewById(R.id.copyLayout);
         saveLayout = findViewById(R.id.saveLayout);
         outputLayout = findViewById(R.id.outputLayout);
+        inputWordLayout = findViewById(R.id.inputWordLayout);
+        outputWordLayout = findViewById(R.id.outputWordLayout);
+        inputLetterLayout = findViewById(R.id.inputLetterLayout);
+        outputLetterLayout = findViewById(R.id.outputLetterLayout);
         globalFunction = new GlobalFunction(this);
 
         adView = findViewById(R.id.adView);
@@ -138,30 +144,30 @@ public class ReplaceTextActivity extends AppCompatActivity implements AdInterfac
             StringBuffer buffer = new StringBuffer(inputText);
             inputText = buffer.reverse().toString();
         }
+
         outputText = inputText.replaceAll(findText, replaceText);
 
         if (cbCountWord.isChecked()) {
-            tvInputWord.setVisibility(View.VISIBLE);
-            tvOutputWord.setVisibility(View.VISIBLE);
+            inputWordLayout.setVisibility(View.VISIBLE);
+            outputWordLayout.setVisibility(View.VISIBLE);
         } else {
-            tvInputWord.setVisibility(View.GONE);
-            tvOutputWord.setVisibility(View.GONE);
+            inputWordLayout.setVisibility(View.GONE);
+            outputWordLayout.setVisibility(View.GONE);
         }
 
         if (cbCountLetter.isChecked()) {
-            tvInputLetter.setVisibility(View.VISIBLE);
-            tvOutputLetter.setVisibility(View.VISIBLE);
+            inputLetterLayout.setVisibility(View.VISIBLE);
+            outputLetterLayout.setVisibility(View.VISIBLE);
         } else {
-            tvInputLetter.setVisibility(View.GONE);
-            tvOutputLetter.setVisibility(View.GONE);
+            inputLetterLayout.setVisibility(View.GONE);
+            outputLetterLayout.setVisibility(View.GONE);
         }
 
         tvOutput.setText(outputText);
-        tvOutputLetter.setText("Total Output letters:- " + outputText.replaceAll(" ", "").length());
-        tvInputLetter.setText("Total Input letters:- " + inputText.replaceAll(" ", "").length());
-        tvOutputWord.setText("Total Output Words :- " + countWords(outputText));
-        tvInputWord.setText("Total Input Words :- " + countWords(originalText));
-
+        tvOutputLetter.setText("" + outputText.replaceAll(" ", "").length());
+        tvInputLetter.setText("" + inputText.replaceAll(" ", "").length());
+        tvOutputWord.setText("" + countWords(outputText));
+        tvInputWord.setText("" + countWords(originalText));
         result = outputText;
     }
 

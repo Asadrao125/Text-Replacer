@@ -228,11 +228,123 @@
                 android:text="Replace Text" />
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/inputWordLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Total Input Word :- "
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvInputWord"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textColor="@color/orange"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/outputWordLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Total Output Word :- "
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvOutputWord"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textColor="@color/orange"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/inputLetterLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Total Input Letter :- "
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvInputLetter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textColor="@color/orange"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/outputLetterLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Total Output Letter :- "
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvOutputLetter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textColor="@color/orange"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/outputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="visible">
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
@@ -280,46 +392,6 @@
                                 android:textColor="@color/black"
                                 android:textSize="18sp"
                                 android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/tvInputWord"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Intput Word"
-                                android:textColor="@color/black"
-                                android:textSize="18sp"
-                                android:textStyle="bold"
-                                android:visibility="gone" />
-
-                            <TextView
-                                android:id="@+id/tvOutputWord"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Output Word"
-                                android:textColor="@color/black"
-                                android:textSize="18sp"
-                                android:textStyle="bold"
-                                android:visibility="gone" />
-
-                            <TextView
-                                android:id="@+id/tvInputLetter"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Input Letter"
-                                android:textColor="@color/black"
-                                android:textSize="18sp"
-                                android:textStyle="bold"
-                                android:visibility="gone" />
-
-                            <TextView
-                                android:id="@+id/tvOutputLetter"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="OutputLetter"
-                                android:textColor="@color/black"
-                                android:textSize="18sp"
-                                android:textStyle="bold"
-                                android:visibility="gone" />
 
                         </LinearLayout>
 
@@ -408,6 +480,8 @@
                     android:id="@+id/saveLayout"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:background="@drawable/ripple_effect"
                     android:gravity="center">
 

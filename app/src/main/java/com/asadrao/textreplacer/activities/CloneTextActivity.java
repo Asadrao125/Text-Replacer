@@ -37,14 +37,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class CloneTextActivity extends AppCompatActivity implements AdInterface {
-    AdView adView;
     String result;
+    AdView adView;
     TextView tvOutput;
     Button btnCloneText;
     AdInterface adInterface;
     LinearLayout outputLayout;
-    EditText edtInput, edtCloneLimit;
     GlobalFunction globalFunction;
+    EditText edtInput, edtCloneLimit;
     LinearLayout shareLayout, copyLayout, saveLayout;
 
     @Override
@@ -84,7 +84,7 @@ public class CloneTextActivity extends AppCompatActivity implements AdInterface 
                         RewardAdUtil rewardAdUtil = new RewardAdUtil(CloneTextActivity.this, adInterface, "SHARE");
                         rewardAdUtil.showRewardAd();
 
-                        tvOutput.setText(String.join("", Collections.nCopies(limit, input)));
+                        tvOutput.setText(String.join("", Collections.nCopies(limit, input + "\n")));
                         result = String.join("", Collections.nCopies(limit, input));
                     } else {
                         result = String.format("%0" + limit + "d", 0).replace("0", input);
