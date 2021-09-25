@@ -64,7 +64,7 @@
             android:lineHeight="30dp"
             android:lineSpacingExtra="10dp"
             android:padding="10dp"
-            android:text="This is a simple Auto Text Replace application. You can easily replace, count, search, close, reverse, count word and letter in the text with this application."
+            android:text="This is a simple Auto Text Replace application. You can easily replace, count, search, clone, reverse, count word and letter in the text with this application."
             android:textAlignment="center"
             android:textSize="18sp" />
 
