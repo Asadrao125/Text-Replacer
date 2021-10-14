@@ -1,7 +1,16 @@
 <resources>
     <string name="app_name">Auto Text Replacer</string>'
-    <string name="app_id">ca-app-pub-7301652379104128~6817025646</string>
+
+    <!-- TEST IDS -->
+    <!--<string name="app_id">ca-app-pub-7301652379104128~6817025646</string>
     <string name="banner_ads">ca-app-pub-3940256099942544/6300978111</string>
     <string name="interstitial_ads">ca-app-pub-3940256099942544/1033173712</string>
-    <string name="reward_ad">ca-app-pub-3940256099942544/5224354917</string>
+    <string name="reward_ad">ca-app-pub-3940256099942544/5224354917</string>-->
+
+    <!-- LIVE IDS -->
+    <string name="app_id">ca-app-pub-7301652379104128~5246460464</string>
+    <string name="banner_ads">ca-app-pub-7301652379104128/2460854337</string>
+    <string name="interstitial_ads">ca-app-pub-7301652379104128/3382714457</string>
+    <string name="reward_ad">ca-app-pub-7301652379104128/1422765527</string>
+
 </resources>

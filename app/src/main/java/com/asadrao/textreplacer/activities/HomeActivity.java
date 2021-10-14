@@ -71,7 +71,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        tvVersionName.setText("Version Name: " + BuildConfig.VERSION_NAME);
+        //tvVersionName.setText("Version Name: 1.01");
 
         shareLayout.setOnClickListener(new View.OnClickListener() {
             @Override
